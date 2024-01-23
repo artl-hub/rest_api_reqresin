@@ -15,5 +15,6 @@ build/
 
 ### Gradle ###
 .gradle
-gradlew.bat
-settings.gradle
+.bat
+gradlew
+gradle/wrapper
