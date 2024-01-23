@@ -1,7 +1,9 @@
 package tests;
 
-import models.RegisterBodyModel;
-import models.ResponseModel;
+import models.lombok.RegisterBodyLombokModel;
+import models.lombok.ResponseLombokModel;
+import models.pojo.RegisterBodyModel;
+import models.pojo.ResponseModel;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
@@ -17,7 +19,7 @@ public class RegisterTests {
 
 
     @Test
-    void successfulRegisterTest() {
+    void successfulRegisterPojoTest() {
         RegisterBodyModel registerData = new RegisterBodyModel();
         registerData.setEmail("eve.holt@reqres.in");
         registerData.setPassword("pistol");
@@ -27,10 +29,10 @@ public class RegisterTests {
                 .contentType(JSON)
                 .log().uri()
 
-        .when()
+                .when()
                 .post("https://reqres.in/api/register")
 
-        .then()
+                .then()
                 .log().status()
                 .log().body()
                 .statusCode(200)
@@ -38,6 +40,33 @@ public class RegisterTests {
 
         assertEquals("QpwL5tke4Pnpja7X4", response.getToken());
         assertEquals("4", response.getId());
+
+    }
+
+
+        @Test
+        void successfulRegisterLombokTest() {
+            RegisterBodyLombokModel registerData = new RegisterBodyLombokModel();
+            registerData.setEmail("eve.holt@reqres.in");
+            registerData.setPassword("pistol");
+
+            ResponseLombokModel response = given()
+                    .body(registerData)
+                    .contentType(JSON)
+                    .log().uri()
+
+            .when()
+                    .post("https://reqres.in/api/register")
+
+            .then()
+                    .log().status()
+                    .log().body()
+                    .statusCode(200)
+                    .extract().as(ResponseLombokModel.class);
+
+            assertEquals("QpwL5tke4Pnpja7X4", response.getToken());
+            assertEquals("4", response.getId());
+        }
 
 
 
@@ -65,4 +94,4 @@ public class RegisterTests {
 
 
     }
-}
+

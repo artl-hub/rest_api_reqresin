@@ -1,4 +1,4 @@
-package models;
+package models.pojo;
 
 public class RegisterBodyModel {
     String email, password;
