@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
-import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RegisterTests {
@@ -42,27 +41,27 @@ public class RegisterTests {
 
 
 
-        @Test
-        void BadPracticeSuccessfulRegisterTest() {
-            String regData = "{\n" +
-                    "    \"email\": \"eve.holt@reqres.in\",\n" +
-                    "    \"password\": \"pistol\"\n" +
-                    "}";
-            given()
-                    .body(regData)
-                    .contentType(JSON)
-                    .log().uri()
-
-            .when()
-                    .post("https://reqres.in/api/register")
-
-            .then()
-                    .log().status()
-                    .log().body()
-                    .statusCode(200)
-                    .body("id", is(4),
-                            "token", is("QpwL5tke4Pnpja7X4"));
-        }
+//        @Test
+//        void BadPracticeSuccessfulRegisterTest() {
+//            String regData = "{\n" +
+//                    "    \"email\": \"eve.holt@reqres.in\",\n" +
+//                    "    \"password\": \"pistol\"\n" +
+//                    "}";
+//            given()
+//                    .body(regData)
+//                    .contentType(JSON)
+//                    .log().uri()
+//
+//            .when()
+//                    .post("https://reqres.in/api/register")
+//
+//            .then()
+//                    .log().status()
+//                    .log().body()
+//                    .statusCode(200)
+//                    .body("id", is(4),
+//                            "token", is("QpwL5tke4Pnpja7X4"));
+//        }
 
 
     }
