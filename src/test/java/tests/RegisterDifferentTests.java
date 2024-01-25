@@ -1,17 +1,11 @@
 package tests;
 
 
-import io.qameta.allure.restassured.AllureRestAssured;
 import models.lombok.*;
-import models.pojo.RegisterBodyModel;
-import models.pojo.ResponseModel;
 import org.junit.jupiter.api.Test;
-
-import static helpers.CustomAllureListener.withCustomTemplates;
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
-import static io.restassured.http.ContentType.JSON;
-import static org.hamcrest.Matchers.is;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static specs.RegisterSpec.*;
 
@@ -19,7 +13,7 @@ import static specs.RegisterSpec.*;
 
 public class RegisterDifferentTests {
 
-//"{\n" +
+    //"{\n" +
 //                "    \"email\": \"eve.holt@reqres.in\",\n" +
 //                "    \"password\": \"pistol\"\n" +
 //                "}";
@@ -41,7 +35,6 @@ public class RegisterDifferentTests {
                 .then()
                         .spec(registerResponseSpec)
                         .extract().as(ResponseLombokModel.class));
-
 
         step("Check request", () -> {
 
@@ -110,7 +103,6 @@ public class RegisterDifferentTests {
                         .then()
                         .spec(missingAtSymbolInEmailResponseSpec)
                         .extract().as(MissingAtSymbolInEmailModel.class));
-
 
         step("Check response", ()->
                 assertEquals("Note: Only defined users succeed registration", response.getError()));

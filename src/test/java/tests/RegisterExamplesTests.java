@@ -17,13 +17,12 @@ import static specs.RegisterSpec.registerRequestSpec;
 import static specs.RegisterSpec.registerResponseSpec;
 
 
-public class RegisterTests {
+public class RegisterExamplesTests {
 
 //"{\n" +
 //                "    \"email\": \"eve.holt@reqres.in\",\n" +
 //                "    \"password\": \"pistol\"\n" +
 //                "}";
-
 
     @Test
     void successfulRegisterPojoTest() {
