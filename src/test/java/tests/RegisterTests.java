@@ -13,6 +13,9 @@ import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static helpers.CustomAllureListener.withCustomTemplates;
+import static specs.RegisterSpec.registerRequestSpec;
+import static specs.RegisterSpec.registerResponseSpec;
+
 
 public class RegisterTests {
 
@@ -50,29 +53,29 @@ public class RegisterTests {
     }
 
 
-        @Test
-        void successfulRegisterLombokTest() {
-            RegisterBodyLombokModel registerData = new RegisterBodyLombokModel();
-            registerData.setEmail("eve.holt@reqres.in");
-            registerData.setPassword("pistol");
+    @Test
+    void successfulRegisterLombokTest() {
+        RegisterBodyLombokModel registerData = new RegisterBodyLombokModel();
+        registerData.setEmail("eve.holt@reqres.in");
+        registerData.setPassword("pistol");
 
-            ResponseLombokModel response = given()
-                    .body(registerData)
-                    .contentType(JSON)
-                    .log().uri()
+        ResponseLombokModel response = given()
+                .body(registerData)
+                .contentType(JSON)
+                .log().uri()
 
-            .when()
-                    .post("https://reqres.in/api/register")
+                .when()
+                .post("https://reqres.in/api/register")
 
-            .then()
-                    .log().status()
-                    .log().body()
-                    .statusCode(200)
-                    .extract().as(ResponseLombokModel.class);
+                .then()
+                .log().status()
+                .log().body()
+                .statusCode(200)
+                .extract().as(ResponseLombokModel.class);
 
-            assertEquals("QpwL5tke4Pnpja7X4", response.getToken());
-            assertEquals("4", response.getId());
-        }
+        assertEquals("QpwL5tke4Pnpja7X4", response.getToken());
+        assertEquals("4", response.getId());
+    }
 
 
     @Test
@@ -104,9 +107,7 @@ public class RegisterTests {
     }
 
 
-
     @Test
-
     void successfulRegisterСustomAllureTest() {
         RegisterBodyLombokModel registerData = new RegisterBodyLombokModel();
         registerData.setEmail("eve.holt@reqres.in");
@@ -135,64 +136,64 @@ public class RegisterTests {
     }
 
     @Test
-
     void successfulRegisterWithStepsTest() {
         RegisterBodyLombokModel registerData = new RegisterBodyLombokModel();
         registerData.setEmail("eve.holt@reqres.in");
         registerData.setPassword("pistol");
 
 
-            ResponseLombokModel response = step("Make request", ()->
+        ResponseLombokModel response = step("Make request", () ->
                 given()
-                    .filter(withCustomTemplates())
-                    .log().uri()
-                    .log().body()
-                    .log().headers()
-                    .body(registerData)
-                    .contentType(JSON)
-                    .log().uri()
+                        .filter(withCustomTemplates())
+                        .log().uri()
+                        .log().body()
+                        .log().headers()
+                        .body(registerData)
+                        .contentType(JSON)
+                        .log().uri()
 
-                    .when()
-                    .post("https://reqres.in/api/register")
+                        .when()
+                        .post("https://reqres.in/api/register")
 
-                    .then()
-                    .log().status()
-                    .log().body()
-                    .statusCode(200)
-                    .extract().as(ResponseLombokModel.class));
+                        .then()
+                        .log().status()
+                        .log().body()
+                        .statusCode(200)
+                        .extract().as(ResponseLombokModel.class));
 
 
-        step("Check request", ()-> {
+        step("Check request", () -> {
 
-        assertEquals("QpwL5tke4Pnpja7X4", response.getToken());
-        assertEquals("4", response.getId());
+            assertEquals("QpwL5tke4Pnpja7X4", response.getToken());
+            assertEquals("4", response.getId());
         });
     }
 
+    @Test
+    void successfulRegisterWithSpecsTest() {
+        RegisterBodyLombokModel registerData = new RegisterBodyLombokModel();
+        registerData.setEmail("eve.holt@reqres.in");
+        registerData.setPassword("pistol");
 
 
-//        @Test
-//        void BadPracticeSuccessfulRegisterTest() {
-//            String regData = "{\n" +
-//                    "    \"email\": \"eve.holt@reqres.in\",\n" +
-//                    "    \"password\": \"pistol\"\n" +
-//                    "}";
-//            given()
-//                    .body(regData)
-//                    .contentType(JSON)
-//                    .log().uri()
-//
-//            .when()
-//                    .post("https://reqres.in/api/register")
-//
-//            .then()
-//                    .log().status()
-//                    .log().body()
-//                    .statusCode(200)
-//                    .body("id", is(4),
-//                            "token", is("QpwL5tke4Pnpja7X4"));
-//        }
+        ResponseLombokModel response = step("Make request", () ->
+                given(registerRequestSpec)
+                        .body(registerData)
+
+                .when()
+                        .post()
+
+                .then()
+                        .spec(registerResponseSpec)
+                        .extract().as(ResponseLombokModel.class));
 
 
+        step("Check request", () -> {
+
+            assertEquals("QpwL5tke4Pnpja7X4", response.getToken());
+            assertEquals("4", response.getId());
+        });
     }
+
+}
 
