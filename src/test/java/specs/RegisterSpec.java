@@ -16,9 +16,8 @@ public class RegisterSpec {
             .log().uri()
             .log().body()
             .log().headers()
-            .contentType(JSON)
-            .baseUri("https://reqres.in")
-            .basePath("/api/register");
+            .contentType(JSON);
+
 
     public static ResponseSpecification registerResponseSpec = new ResponseSpecBuilder()
             .expectStatusCode(200)
@@ -26,19 +25,8 @@ public class RegisterSpec {
             .log(BODY)
             .build();
 
-    public static ResponseSpecification missingPasswordResponseSpec = new ResponseSpecBuilder()
-            .expectStatusCode(400)
-            .log(STATUS)
-            .log(BODY)
-            .build();
 
-    public static ResponseSpecification missingPasswordAndEmailResponseSpec = new ResponseSpecBuilder()
-            .expectStatusCode(400)
-            .log(STATUS)
-            .log(BODY)
-            .build();
-
-    public static ResponseSpecification missingAtSymbolInEmailResponseSpec = new ResponseSpecBuilder()
+    public static ResponseSpecification missingAuthorizationElements = new ResponseSpecBuilder()
             .expectStatusCode(400)
             .log(STATUS)
             .log(BODY)

@@ -19,10 +19,6 @@ import static specs.RegisterSpec.registerResponseSpec;
 
 public class RegisterExamplesTests {
 
-//"{\n" +
-//                "    \"email\": \"eve.holt@reqres.in\",\n" +
-//                "    \"password\": \"pistol\"\n" +
-//                "}";
 
     @Test
     void successfulRegisterPojoTest() {
