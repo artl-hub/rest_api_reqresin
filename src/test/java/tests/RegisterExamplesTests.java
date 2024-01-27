@@ -6,6 +6,7 @@ import models.lombok.RegisterBodyLombokModel;
 import models.lombok.ResponseLombokModel;
 import models.pojo.RegisterBodyModel;
 import models.pojo.ResponseModel;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static io.qameta.allure.Allure.step;
@@ -16,7 +17,7 @@ import static helpers.CustomAllureListener.withCustomTemplates;
 import static specs.RegisterSpec.registerRequestSpec;
 import static specs.RegisterSpec.registerResponseSpec;
 
-
+@Disabled
 public class RegisterExamplesTests {
 
 

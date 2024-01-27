@@ -2,19 +2,26 @@ package tests;
 
 
 import models.lombok.*;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import testData.TestBase;
+
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static specs.RegisterSpec.*;
 
+@DisplayName("API TESTS")
+@Tag("testSet")
 public class RegisterDifferentTests extends TestBase {
 
+
     @Test
-    void successfulRegisterWithSpecsTest() {
+    @Tag("positive")
+    @DisplayName("REGISTER - SUCCESSFUL")
+
+        void successfulRegisterWithSpecsTest() {
         RegisterBodyLombokModel registerData = new RegisterBodyLombokModel();
         registerData.setEmail("eve.holt@reqres.in");
         registerData.setPassword("pistol");
@@ -40,6 +47,8 @@ public class RegisterDifferentTests extends TestBase {
 
 
     @Test
+    @Tag("negative")
+    @DisplayName("MISSING PASSWORD")
     void missingPasswordTest() {
         RegisterBodyLombokModel registerData = new RegisterBodyLombokModel();
         registerData.setEmail("eve.holt@reqres.in");
@@ -63,6 +72,8 @@ public class RegisterDifferentTests extends TestBase {
 
 
     @Test
+    @Tag("negative")
+    @DisplayName("MISSING PASSWORD AND EMAIL")
     void missingPasswordAndEmailTest() {
         RegisterBodyLombokModel registerData = new RegisterBodyLombokModel();
 
@@ -83,6 +94,8 @@ public class RegisterDifferentTests extends TestBase {
     }
 
     @Test
+    @Tag("negative")
+    @DisplayName("MISSING SYMBOL IN EMAIL: @ ")
     void missingAtSymbolInEmailTest() {
         RegisterBodyLombokModel registerData = new RegisterBodyLombokModel();
         registerData.setEmail("eve.holtreqres.in");
