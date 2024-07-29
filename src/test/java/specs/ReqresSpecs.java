@@ -1,13 +1,14 @@
-package ru.reqres.specs;
+package specs;
 
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 
+import static helpers.CustomAllureListener.withCustomTemplates;
 import static io.restassured.RestAssured.with;
 import static io.restassured.filter.log.LogDetail.BODY;
 import static io.restassured.filter.log.LogDetail.STATUS;
-import static ru.reqres.helpers.CustomAllureListener.withCustomTemplates;
+//import static ru.reqres.helpers.CustomAllureListener.withCustomTemplates;
 
 public class ReqresSpecs {
   public static RequestSpecification basicRequestSpec = with()
@@ -31,4 +32,11 @@ public class ReqresSpecs {
       .log(BODY)
       .build();
   }
+
+  public static ResponseSpecification deleteResponseSpec = new ResponseSpecBuilder()
+          .expectStatusCode(204)
+          .build();
+
+
+
 }
