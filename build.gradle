@@ -60,3 +60,9 @@ task positive(type: Test) {
         includeTags("positive")
     }
 }
+
+task negative(type: Test) {
+    useJUnitPlatform {
+        includeTags("negative")
+    }
+}

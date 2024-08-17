@@ -1,9 +1,9 @@
 package tests;
 
 
-import models.UserDataResponseModel;
-import models.UsersListResponseModel;
-import models.lombok.*;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
+import models.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -24,64 +24,66 @@ public class UserManagementTests extends TestBase {
 
     @Test
     @Tag("positive")
-    @DisplayName("REGISTER - SUCCESSFUL")
-//------------------------1--------------------------
-    void successfulRegisterWithSpecsTest() {
-        RegisterBodyLombokModel registerData = new RegisterBodyLombokModel();
+    @Feature("User Management")
+    @Story("New User Registration")
+    @DisplayName("Register - Successful")
+
+    void successfulRegisterTest() {
+        RegisterBodyModel registerData = new RegisterBodyModel();
         registerData.setEmail("eve.holt@reqres.in");
         registerData.setPassword("pistol");
 
-
-        ResponseLombokModel response = step("Make request", () ->
+        RegisterSuccessfulResponseModel response = step("Make registration request", () ->
                 given(registerRequestSpec)
                         .body(registerData)
-
                         .when()
-                        .post()
-
+                        .post("/register")
                         .then()
                         .spec(registerResponseSpec)
-                        .extract().as(ResponseLombokModel.class));
+                        .body(matchesJsonSchemaInClasspath("schemas/successful-register-schema.json"))
+                        .extract().as(RegisterSuccessfulResponseModel.class));
 
-        step("Check request", () -> {
+        step("Validate registration response", () -> {
 
             assertNotNull(response.getToken(), "Token should not be null");
             assertEquals("4", response.getId());
         });
     }
 
-
-    //------------------------2--------------------------
     @Test
     @Tag("negative")
-    @DisplayName("MISSING PASSWORD")
+    @Feature("User Management")
+    @Story("New User Registration")
+    @DisplayName("Registration Error: Password is Missing")
     void missingPasswordTest() {
-        RegisterBodyLombokModel registerData = new RegisterBodyLombokModel();
+        RegisterBodyModel registerData = new RegisterBodyModel();
         registerData.setEmail("eve.holt@reqres.in");
 
 
-        ErrorRegisterModel response = step("Make request", () ->
+        RegisterErrorModel response = step("Make registration request without password", () ->
                 given(registerRequestSpec)
                         .body(registerData)
 
                         .when()
-                        .post()
+                        .post("/register")
 
                         .then()
                         .spec(missingAuthorizationElements)
-                        .extract().as(ErrorRegisterModel.class));
+                        .extract().as(RegisterErrorModel.class));
 
-        step("Check response", ()->
+        step("Validate error message in response", ()->
                 assertEquals("Missing password", response.getError()));
 
     }
 
-
-    //------------------------3-------------------------- added chema
     @Test
+    @Tag("positive")
+    @Feature("User Management")
+    @Story("Getting Single User Details")
+    @DisplayName("Single User is Displayed")
     void singleUserIsDisplayedTest() {
 
-        UserDataResponseModel response = step("Отправляем запрос", () ->
+        UserDataResponseModel response = step("Send request to get single user", () ->
                 given(basicRequestSpec)
                         .when()
                         .get("/users/2")
@@ -90,7 +92,7 @@ public class UserManagementTests extends TestBase {
                         .body(matchesJsonSchemaInClasspath("schemas/success-single-user-schema.json"))
                         .extract().as(UserDataResponseModel.class));
 
-        step("Проверяем ответ", () -> {
+        step("Verify response data", () -> {
             assertThat(response.getUser().getId()).isEqualTo(2);
             assertThat(response.getUser().getEmail()).isEqualTo("janet.weaver@reqres.in");
             assertThat(response.getUser().getFirstName()).isEqualTo("Janet");
@@ -98,33 +100,32 @@ public class UserManagementTests extends TestBase {
         });
     }
 
-    //------------------------4--------------------------
     @Test
+    @Tag("positive")
+    @Feature("User Management")
+    @Story("Getting User List ")
+    @DisplayName("ser List is Displayed")
     void userListIsDisplayedTest() {
-        UsersListResponseModel response = step("Отправляем запрос", () ->
+        UsersListResponseModel response = step("Send request to get user list", () ->
                 given(basicRequestSpec)
                         .when()
                         .get("/users?page=2")
                         .then()
-//                        .body(matchesJsonSchemaInClasspath("schemas/success-users-list-schema.json"))
+                        .body(matchesJsonSchemaInClasspath("schemas/user-list-is-displayed-test-schema.json"))
                         .spec(loggingResponseSpec(200))
                         .extract().as(UsersListResponseModel.class));
 
-        step("Проверяем ответ", () ->
+        step("Verify response data", () ->
                 assertThat(response.getPage()).isEqualTo(2));
     }
 
-    //------------------------5--------------------------
-
-
-
-
-
     @Test
     @Tag("delete")
-    @DisplayName("DELETE - SUCCESSFUL")
+    @Feature("User Management")
+    @Story("Delete Single User ")
+    @DisplayName("Delete - Successful")
     void deleteUserTest() {
-        var response = step("Отправляем запрос DELETE к /api/users/2", () ->
+        var response = step("Send DELETE request to /api/users/2", () ->
                 given()
                         .when()
                         .delete("/users/2")
@@ -133,7 +134,7 @@ public class UserManagementTests extends TestBase {
                         .extract().response()
         );
 
-        step("Проверяем ответ", () ->
+        step("Verify that response status code is 204", () ->
                 assertThat(response.statusCode()).isEqualTo(204));
     }
 }
