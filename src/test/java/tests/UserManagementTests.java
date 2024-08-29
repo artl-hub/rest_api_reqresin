@@ -104,7 +104,7 @@ public class UserManagementTests extends TestBase {
     @Tag("positive")
     @Feature("User Management")
     @Story("Getting User List ")
-    @DisplayName("ser List is Displayed")
+    @DisplayName("User List is Displayed")
     void userListIsDisplayedTest() {
         UsersListResponseModel response = step("Send request to get user list", () ->
                 given(basicRequestSpec)
