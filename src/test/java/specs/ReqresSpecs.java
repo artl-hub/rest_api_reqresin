@@ -8,7 +8,6 @@ import static helpers.CustomAllureListener.withCustomTemplates;
 import static io.restassured.RestAssured.with;
 import static io.restassured.filter.log.LogDetail.BODY;
 import static io.restassured.filter.log.LogDetail.STATUS;
-//import static ru.reqres.helpers.CustomAllureListener.withCustomTemplates;
 
 public class ReqresSpecs {
   public static RequestSpecification basicRequestSpec = with()

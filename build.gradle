@@ -67,6 +67,4 @@ task negative(type: Test) {
     }
 }
 
-task allTests(type: Test) {
-    useJUnitPlatform()
-}
+
